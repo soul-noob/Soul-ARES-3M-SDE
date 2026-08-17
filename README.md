@@ -19,7 +19,7 @@ The sampler actively manages the NFE budget by swapping solvers dynamically duri
 1. Go to your `ComfyUI/custom_nodes/` directory.
 2. Clone this repository:
    ```bash
-   git clone https://github.com/your-username/Soul-ARES-3M-SDE.git
+   git clone https://github.com/soul-noob/Soul-ARES-3M-SDE.git
    ```
 3. Restart ComfyUI. 
 4. The sampler will appear natively in your standard `KSampler` node dropdown as **`soul_ares_3m_sde`**.
@@ -28,7 +28,7 @@ The sampler actively manages the NFE budget by swapping solvers dynamically duri
 1. Go to your `webui/extensions/` directory.
 2. Clone this repository:
    ```bash
-   git clone https://github.com/your-username/Soul-ARES-3M-SDE.git
+   git clone https://github.com/soul-noob/Soul-ARES-3M-SDE.git
    ```
 3. Restart your WebUI.
 4. The sampler will appear natively in your Sampling Method dropdown as **`Soul ARES 3M SDE`**.
