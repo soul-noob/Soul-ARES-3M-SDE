@@ -38,7 +38,7 @@ The sampler actively manages the NFE budget by swapping solvers dynamically duri
 This sampler uses high-order math and dynamic sub-stepping. It is optimized for lower step counts. 
 
 * **Steps:** `20 to 35` (Scaling past 40 steps is not recommended and provides diminishing returns).
-* **Scheduler (FLUX / SD3.5):** `simple` (Required for Flow-Matching models).
+* **Scheduler (FLUX / SD3.5 / Anima):** `simple` (Required for Flow-Matching models).
 * **Scheduler (SDXL / SD1.5):** `sgm_uniform` (Maximizes the stability of the 3M engine).
 * **CFG Scale:** Standard ranges for your model. The variance lock will prevent deep-frying at reasonable values.
 
