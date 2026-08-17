@@ -1,33 +1,101 @@
 # ======================================================================
-# COMFYUI INJECTION NODE
-# Hooks the Soul_ARES mathematical engine directly into the UI dropdowns
+# SOUL ARES 3M SDE
+# ComfyUI sampler registration
 # ======================================================================
 
 import comfy.samplers
 import comfy.k_diffusion.sampling as k_sampling
+
 from .sampler_core import sample_restart_er_3ma
 
-# Your personalized sampler name as it will appear in the UI dropdown
+
+# ----------------------------------------------------------------------
+# Configuration
+# ----------------------------------------------------------------------
+
 SAMPLER_NAME = "soul_ares_3m_sde"
+SAMPLER_FUNCTION_NAME = f"sample_{SAMPLER_NAME}"
 
-# 1. Attach our sampler to ComfyUI's internal k_diffusion backend.
-# ComfyUI automatically looks for a function named "sample_" + SAMPLER_NAME.
-# So we dynamically bind your math engine to that exact name.
-if not hasattr(k_sampling, f'sample_{SAMPLER_NAME}'):
-    setattr(k_sampling, f'sample_{SAMPLER_NAME}', sample_restart_er_3ma)
 
-# 2. Add it to the standard KSampler Dropdown list safely
+# ----------------------------------------------------------------------
+# 1. Register the sampler implementation with k-diffusion
+# ----------------------------------------------------------------------
+#
+# ComfyUI resolves sampler implementations using:
+#
+#     sample_<sampler_name>
+#
+# Therefore:
+#
+#     soul_ares_3m_sde
+#
+# must resolve to:
+#
+#     sample_soul_ares_3m_sde
+#
+# ----------------------------------------------------------------------
+
+setattr(
+    k_sampling,
+    SAMPLER_FUNCTION_NAME,
+    sample_restart_er_3ma,
+)
+
+
+# ----------------------------------------------------------------------
+# 2. Register the sampler in ComfyUI's sampler lists
+# ----------------------------------------------------------------------
+#
+# IMPORTANT:
+#
+# ComfyUI has both:
+#
+#   KSAMPLER_NAMES
+#   SAMPLER_NAMES
+#
+# SAMPLER_NAMES is constructed separately from KSAMPLER_NAMES, so adding
+# a name only to KSAMPLER_NAMES does NOT necessarily make it appear in
+# the KSampler node's dropdown.
+#
+# We therefore explicitly register it in both.
+# ----------------------------------------------------------------------
+
 if SAMPLER_NAME not in comfy.samplers.KSAMPLER_NAMES:
     comfy.samplers.KSAMPLER_NAMES.append(SAMPLER_NAME)
 
-# 3. Required extension mappings for ComfyUI. 
-# Because we are upgrading the native KSampler directly, we don't need 
-# to clutter the user's canvas with weird custom nodes. We leave these empty.
+if SAMPLER_NAME not in comfy.samplers.SAMPLER_NAMES:
+    comfy.samplers.SAMPLER_NAMES.append(SAMPLER_NAME)
+
+
+# ----------------------------------------------------------------------
+# 3. Node mappings
+# ----------------------------------------------------------------------
+#
+# We are extending ComfyUI's native KSampler rather than creating a
+# separate custom node.
+# ----------------------------------------------------------------------
+
 NODE_CLASS_MAPPINGS = {}
 NODE_DISPLAY_NAME_MAPPINGS = {}
 
-# 4. Boot-up message so users know it loaded successfully
-print(f"==================================================")
-print(f"  [+] Loaded Soul_Noob's Hybrid Sampler: {SAMPLER_NAME} ")
-print(f"      Engine: ARES (aRK4 + Restart + ER-SDE + 3M) ")
-print(f"==================================================")
+
+# ----------------------------------------------------------------------
+# 4. Startup message
+# ----------------------------------------------------------------------
+
+print("=" * 70)
+print("  Soul-ARES 3M SDE loaded")
+print(f"  Sampler: {SAMPLER_NAME}")
+print(f"  Function: {SAMPLER_FUNCTION_NAME}")
+print("  Engine: Restart + ER-SDE + DPM++ 3M + aRK4")
+print("=" * 70)
+
+
+# ----------------------------------------------------------------------
+# 5. Optional package metadata
+# ----------------------------------------------------------------------
+
+__all__ = [
+    "NODE_CLASS_MAPPINGS",
+    "NODE_DISPLAY_NAME_MAPPINGS",
+]
