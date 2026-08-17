@@ -1,0 +1,25 @@
+# Python cache files (ComfyUI & WebUI generate these constantly)
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual Environments (In case you or a user tests locally)
+venv/
+.venv/
+env/
+.env/
+
+# IDE and Editor folders
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS generated hidden files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
